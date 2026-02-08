@@ -1,0 +1,7 @@
+`function $name($params): $type $body` where {
+  register_diagnostic(
+    span = $type,
+    message = "Explicit function return types are not allowed.",
+    severity = "error"
+  )
+}

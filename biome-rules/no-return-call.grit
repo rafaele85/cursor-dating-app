@@ -1,0 +1,7 @@
+`return $call();` where {
+  register_diagnostic(
+    span = $call,
+    message = "Return only a constant or variable, not an expression.",
+    severity = "error"
+  )
+}
