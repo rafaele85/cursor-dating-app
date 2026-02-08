@@ -1,0 +1,7 @@
+`return $a + $b;` where {
+  register_diagnostic(
+    span = $a,
+    message = "Return only a constant or variable, not an expression.",
+    severity = "error"
+  )
+}

@@ -20,3 +20,12 @@ This file is a local copy of the ticket description for reference.
 7. **Forbid explicit function return types** – No explicit return type annotations. Option: Custom rule (opposite of useExplicitType).
 
 **Acceptance criteria:** Each rule implemented and documented; CI runs checks; docs/QUALITY-GATES.md updated.
+
+---
+
+**Decision (2026-02-08):** ESLint has been removed from the project (dependencies and scripts). The following rules are **WON'T DO** and are not enforced:
+
+1. **No TODO comments in code** – Not implemented. GritQL cannot match comment content in Biome; not feasible.
+2. **Type/interface member delimiter (commas)** – Not implemented. Delimiter is trivia in the AST; GritQL cannot distinguish semicolon vs comma.
+
+See `docs/QUALITY-GATES.md` and `docs/BIOME-EXTEND-ESLINT-RULES-RESEARCH.md`.

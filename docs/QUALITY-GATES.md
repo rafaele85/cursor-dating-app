@@ -1,7 +1,9 @@
 # Quality gates (SCRUM-14)
 
-Single reference for rules from **SCRUM-30** (Biome) and **SCRUM-31** (additional tools).  
-**Commands:** `npm run lint` | `npm run lint:fix` | `npm run lint:eslint` | `npm run lint:duplication` | `npm run lint:unused-exports` | `npm run typecheck` | `npm run format`
+Single reference for rules from **SCRUM-30** (Biome), **SCRUM-31** (additional tools), and **SCRUM-32** (remaining lint rules).  
+**Commands:** `npm run lint` | `npm run lint:fix` | `npm run lint:duplication` | `npm run lint:unused-exports` | `npm run typecheck` | `npm run format` | `npm run test:biome-rules`
+
+**Lint scope:** `lint` checks `src`, the test runner, and root config files only (not `test/biome-rules-fixtures`, which exist to trigger custom rules and are validated by `test:biome-rules`).
 
 | Rule | IsDone | Tool | Tool setting |
 |------|--------|------|--------------|
@@ -37,27 +39,24 @@ Single reference for rules from **SCRUM-30** (Biome) and **SCRUM-31** (additiona
 | useLiteralKeys | Y | biome | recommended |
 | useTemplate | Y | biome | recommended |
 | noNonNullAssertion | Y | biome | recommended |
-| noProcessEnv | Y | biome | `nursery.noProcessEnv: "warn"` |
-| noExcessiveCognitiveComplexity (15) | Y | biome | `complexity.noExcessiveCognitiveComplexity`, `maxAllowedComplexity: 15` |
-| useStrictMode | Y | biome | `nursery.useStrictMode: "error"` |
-| Explicit return types (forbid) | Y | biome | useExplicitType not enabled |
-| Cyclomatic complexity (max 10) | Y | eslint | `complexity: ["error", { max: 10 }]` |
-| Type/interface member delimiter (commas) | Y | eslint | `@stylistic/ts/member-delimiter-style` |
-| No default parameters | Y | eslint | `no-restricted-syntax` (AssignmentPattern in FormalParameters) |
-| No floating promises | Y | eslint | `@typescript-eslint/no-floating-promises` |
-| Promise: no-new-statics | Y | eslint | `promise/no-new-statics` |
-| Promise: valid-params | Y | eslint | `promise/valid-params` |
-| Import: no duplicates | Y | eslint | `import/no-duplicates` |
-| Import: no cycle | Y | eslint | `import/no-cycle` |
+| noProcessEnv | Y | biome | `style.noProcessEnv: "warn"` |
+| noExcessiveCognitiveComplexity (10) | Y | biome | `complexity.noExcessiveCognitiveComplexity`, `maxAllowedComplexity: 10` |
+| useStrictMode | Y | biome | `suspicious.useStrictMode: "error"` |
+| Cyclomatic complexity (max 10) | Y | biome | `complexity.noExcessiveCognitiveComplexity`, `maxAllowedComplexity: 10` |
+| No default parameters | Y | biome | GritQL plugins `biome-rules/no-default-params-*.grit` |
+| No floating promises | Y | biome | `nursery.noFloatingPromises: "error"` |
+| Import: no cycle | Y | biome | `nursery.noImportCycles: "error"` |
+| Import: no duplicates | Y | biome | assist `organizeImports` (merges duplicates) |
+| No magic numbers (exceptions: 0, 1, -1, 2) | Y | biome | `style.noMagicNumbers: "error"` (default ignores 0,1,2,etc.) |
+| No imports from dist | Y | biome | GritQL plugin `biome-rules/no-import-from-dist.grit` |
+| Prefer TypeScript types over interfaces | Y | biome | GritQL plugin `biome-rules/prefer-type-over-interface.grit` |
+| Max 2 function arguments (else options object) | Y | biome | `nursery.useMaxParams: { max: 2 }` |
+| No expressions in return (return only constant/variable) | Y | biome | GritQL plugins `biome-rules/no-return-*.grit` |
+| Forbid explicit function return types | Y | biome | GritQL plugins `biome-rules/no-explicit-return-*.grit` |
 | Copy/paste (duplication) detection | Y | jscpd | `npm run lint:duplication`, `.jscpd.json` |
 | Unused export detection | Y | ts-prune | `npm run lint:unused-exports` |
 | Typecheck | Y | typescript | `tsc --noEmit`, `npm run typecheck` |
-| No magic numbers (exceptions: 0, 1, -1, 2) | N | — | SCRUM-32 |
-| No TODO comments in code (TODOs in TODO.md) | N | — | SCRUM-32 |
-| No imports from dist | N | — | SCRUM-32 |
-| Prefer TypeScript types over interfaces | N | — | SCRUM-32 |
-| Max 2 function arguments (else options object) | N | — | SCRUM-32 |
-| No expressions in return (return only constant/variable) | N | — | SCRUM-32 |
-| Forbid explicit function return types | N | — | SCRUM-32 |
 
-**CI:** Run `lint`, `typecheck`, `lint:eslint`, `lint:duplication`, `lint:unused-exports`, `test`.
+**CI:** Run `lint`, `typecheck`, `lint:duplication`, `lint:unused-exports`, `test:biome-rules`, `test` (workspaces if any).
+
+**ESLint removed.** Two rules are **WON'T DO** (not implemented): (1) No TODO/FIXME comments in code, (2) Type/interface member delimiter (commas). GritQL attempts showed they are not feasible in Biome (comment content not matchable; delimiter not exposed in AST). See `docs/JIRA-TICKET-REMAINING-QUALITY-RULES.md` and `docs/BIOME-EXTEND-ESLINT-RULES-RESEARCH.md`.

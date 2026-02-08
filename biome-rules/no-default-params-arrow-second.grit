@@ -1,0 +1,7 @@
+`($a, $second = $default) => $body` where {
+  register_diagnostic(
+    span = $second,
+    message = "Default parameters are not allowed. Use explicit arguments or an options object.",
+    severity = "error"
+  )
+}
