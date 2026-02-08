@@ -1,6 +1,6 @@
 # Quality gates (SCRUM-14)
 
-Single reference for rules from **SCRUM-30** (Biome) and **SCRUM-31** (additional tools).  
+Single reference for rules from **SCRUM-30** (Biome), **SCRUM-31** (additional tools), and **SCRUM-32** (remaining lint rules).  
 **Commands:** `npm run lint` | `npm run lint:fix` | `npm run lint:eslint` | `npm run lint:duplication` | `npm run lint:unused-exports` | `npm run typecheck` | `npm run format`
 
 | Rule | IsDone | Tool | Tool setting |
@@ -52,12 +52,12 @@ Single reference for rules from **SCRUM-30** (Biome) and **SCRUM-31** (additiona
 | Copy/paste (duplication) detection | Y | jscpd | `npm run lint:duplication`, `.jscpd.json` |
 | Unused export detection | Y | ts-prune | `npm run lint:unused-exports` |
 | Typecheck | Y | typescript | `tsc --noEmit`, `npm run typecheck` |
-| No magic numbers (exceptions: 0, 1, -1, 2) | N | — | SCRUM-32 |
-| No TODO comments in code (TODOs in TODO.md) | N | — | SCRUM-32 |
-| No imports from dist | N | — | SCRUM-32 |
-| Prefer TypeScript types over interfaces | N | — | SCRUM-32 |
-| Max 2 function arguments (else options object) | N | — | SCRUM-32 |
-| No expressions in return (return only constant/variable) | N | — | SCRUM-32 |
-| Forbid explicit function return types | N | — | SCRUM-32 |
+| No magic numbers (exceptions: 0, 1, -1, 2) | Y | eslint | `@typescript-eslint/no-magic-numbers`, `ignore: [0,1,-1,2]` |
+| No TODO comments in code (TODOs in TODO.md) | Y | eslint | `no-warning-comments` (TODO, FIXME) |
+| No imports from dist | Y | eslint | `import/no-restricted-paths` (zones: dist) |
+| Prefer TypeScript types over interfaces | Y | eslint | `@typescript-eslint/consistent-type-definitions: "type"` |
+| Max 2 function arguments (else options object) | Y | eslint | `max-params: ["error", 2]` |
+| No expressions in return (return only constant/variable) | Y | eslint | `no-restricted-syntax` (ReturnStatement expression types) |
+| Forbid explicit function return types | Y | eslint | `no-restricted-syntax` (FunctionDeclaration/Expression returnType) |
 
 **CI:** Run `lint`, `typecheck`, `lint:eslint`, `lint:duplication`, `lint:unused-exports`, `test`.

@@ -41,6 +41,18 @@ module.exports = tseslint.config(
           message:
             'Default parameters are not allowed. Use explicit arguments or an options object.',
         },
+        // SCRUM-32: No expressions in return (return only constant or variable)
+        {
+          selector:
+            'ReturnStatement[argument.type="CallExpression"], ReturnStatement[argument.type="BinaryExpression"], ReturnStatement[argument.type="LogicalExpression"], ReturnStatement[argument.type="ConditionalExpression"], ReturnStatement[argument.type="ObjectExpression"], ReturnStatement[argument.type="ArrayExpression"], ReturnStatement[argument.type="UnaryExpression"]',
+          message: 'Return only a constant or variable, not an expression.',
+        },
+        // SCRUM-32: Forbid explicit function return types
+        {
+          selector:
+            'FunctionDeclaration[returnType], ArrowFunctionExpression[returnType], FunctionExpression[returnType]',
+          message: 'Explicit function return types are not allowed.',
+        },
       ],
       // Floating promises
       '@typescript-eslint/no-floating-promises': 'error',
@@ -49,6 +61,34 @@ module.exports = tseslint.config(
       'promise/valid-params': 'error',
       'import/no-duplicates': 'error',
       'import/no-cycle': ['error', { maxDepth: 1 }],
+      // SCRUM-32: No magic numbers (exceptions: 0, 1, -1, 2)
+      'no-magic-numbers': 'off',
+      '@typescript-eslint/no-magic-numbers': [
+        'error',
+        { ignore: [0, 1, -1, 2], ignoreArrayIndexes: true },
+      ],
+      // SCRUM-32: No TODO/FIXME in source (use TODO.md)
+      'no-warning-comments': [
+        'error',
+        { terms: ['TODO', 'FIXME'], location: 'start' },
+      ],
+      // SCRUM-32: No imports from dist
+      'import/no-restricted-paths': [
+        'error',
+        {
+          zones: [
+            {
+              target: '.',
+              from: './dist',
+              message: 'Do not import from dist.',
+            },
+          ],
+        },
+      ],
+      // SCRUM-32: Prefer type over interface
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      // SCRUM-32: Max 2 function arguments (else options object)
+      'max-params': ['error', 2],
     },
     settings: {
       'import/resolver': {
