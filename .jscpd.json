@@ -1,0 +1,13 @@
+{
+  "threshold": 0,
+  "reporters": ["console"],
+  "ignore": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.next/**",
+    "**/coverage/**"
+  ],
+  "format": ["typescript", "javascript"],
+  "minTokens": 50,
+  "minLines": 5
+}
