@@ -1,8 +1,6 @@
 {
   "extends": "./tsconfig.base.json",
-  "compilerOptions": {
-    "rootDir": "src"
-  },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.mts", "src/**/*.cts"],
-  "exclude": ["node_modules", "dist", ".next", "coverage"]
+  "compilerOptions": { "rootDir": "." },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "test/**/*.ts"],
+  "exclude": ["node_modules", "dist", ".next", "coverage", "test/biome-rules-fixtures"]
 }
