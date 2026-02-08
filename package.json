@@ -6,11 +6,12 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
-    "typecheck": "npm run typecheck --workspaces",
+    "typecheck": "tsc --noEmit",
     "test": "npm run test --workspaces"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4"
+    "@biomejs/biome": "1.9.4",
+    "typescript": "~5.7.0"
   },
   "engines": {
     "node": ">=20"
