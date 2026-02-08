@@ -1,10 +1,11 @@
 {
   "name": "cursor-dating-app",
   "private": true,
+  "workspaces": ["apps/*"],
   "scripts": {
-    "lint": "pnpm -r run lint",
-    "typecheck": "pnpm -r run typecheck",
-    "test": "pnpm -r run test"
+    "lint": "npm run lint --workspaces",
+    "typecheck": "npm run typecheck --workspaces",
+    "test": "npm run test --workspaces"
   },
   "engines": {
     "node": ">=20"
