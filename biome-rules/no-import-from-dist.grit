@@ -1,0 +1,10 @@
+// Do not import from dist (e.g. from "./dist/..." or "pkg/dist").
+
+`import $what from $source` where {
+  $source <: r".*dist.*",
+  register_diagnostic(
+    span = $source,
+    message = "Do not import from dist.",
+    severity = "error"
+  )
+}

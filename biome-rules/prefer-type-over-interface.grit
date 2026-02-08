@@ -1,0 +1,9 @@
+// Prefer TypeScript type over interface. Use type Foo = {} instead of interface Foo {}.
+
+`interface $name $body` where {
+  register_diagnostic(
+    span = $name,
+    message = "Prefer type alias over interface. Use: type $name = ...",
+    severity = "error"
+  )
+}

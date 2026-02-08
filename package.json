@@ -1,0 +1,31 @@
+{
+  "name": "cursor-dating-app",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "lint": "biome check src test/run-biome-rules-tests.mjs test/unit vitest.config.ts biome.json",
+    "lint:fix": "biome check --write src test/run-biome-rules-tests.mjs test/unit vitest.config.ts biome.json",
+    "lint:all": "npm run lint && npm run lint:duplication && npm run lint:unused-exports",
+    "lint:duplication": "jscpd src/",
+    "lint:unused-exports": "ts-prune",
+    "format": "biome format --write .",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run test:all",
+    "test:all": "npm run test:biome-rules && npm run test:unit",
+    "test:biome-rules": "node test/run-biome-rules-tests.mjs",
+    "test:unit": "vitest run",
+    "quality-gates": "npm run lint:all && npm run typecheck && npm run test:all"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.14",
+    "jscpd": "^4.0.8",
+    "ts-prune": "^0.10.3",
+    "typescript": "~5.7.0",
+    "vitest": "^4.0.18"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/.next",
+      "!**/coverage",
+      "!**/*.min.js",
+      "!**/biome-rules"
+    ]
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf"
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noConsole": "warn",
+        "useStrictMode": "error"
+      },
+      "complexity": {
+        "noExcessiveCognitiveComplexity": {
+          "level": "error",
+          "options": {
+            "maxAllowedComplexity": 10
+          }
+        }
+      },
+      "style": {
+        "noDefaultExport": "error",
+        "noMagicNumbers": "error",
+        "noProcessEnv": "warn"
+      },
+      "nursery": {
+        "noFloatingPromises": "error",
+        "noImportCycles": "error",
+        "useMaxParams": {
+          "level": "error",
+          "options": {
+            "max": 2
+          }
+        }
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "all"
+    }
+  },
+  "plugins": [
+    "./biome-rules/no-default-params-function.grit",
+    "./biome-rules/no-default-params-function-second.grit",
+    "./biome-rules/no-default-params-arrow.grit",
+    "./biome-rules/no-default-params-arrow-second.grit",
+    "./biome-rules/no-return-call.grit",
+    "./biome-rules/no-return-binary.grit",
+    "./biome-rules/no-explicit-return-function.grit",
+    "./biome-rules/no-explicit-return-arrow.grit",
+    "./biome-rules/prefer-type-over-interface.grit",
+    "./biome-rules/no-import-from-dist.grit"
+  ],
+  "overrides": [
+    {
+      "includes": ["test/**/*.mjs"],
+      "linter": {
+        "rules": {
+          "suspicious": { "noConsole": "off" },
+          "style": { "noMagicNumbers": "off" },
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedFunctionParameters": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["test/unit/**", "vitest.config.ts"],
+      "linter": {
+        "rules": {
+          "style": { "noDefaultExport": "off" }
+        }
+      }
+    }
+  ]
+}
