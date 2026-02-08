@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Env and secrets – never commit
+.env
+.env.local
+.env.*.local
+
+# Build and tooling
+dist/
+coverage/
+*.log
+
+# IDE
+.idea/
+.vscode/
