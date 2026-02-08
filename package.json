@@ -1,29 +1,24 @@
 {
   "name": "cursor-dating-app",
   "private": true,
-  "workspaces": ["apps/*"],
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
-    "lint": "biome check .",
-    "lint:fix": "biome check --write .",
-    "lint:eslint": "eslint src/",
+    "lint": "biome check src test/run-biome-rules-tests.mjs biome.json",
+    "lint:fix": "biome check --write src test/run-biome-rules-tests.mjs biome.json",
     "lint:duplication": "jscpd src/",
     "lint:unused-exports": "ts-prune",
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit",
-    "test": "npm run test --workspaces"
+    "test": "npm run test:biome-rules",
+    "test:biome-rules": "node test/run-biome-rules-tests.mjs"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@eslint/js": "^9.39.2",
-    "@stylistic/eslint-plugin-ts": "^4.4.1",
-    "eslint": "^9.39.2",
-    "eslint-import-resolver-typescript": "^4.4.4",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-promise": "^7.2.1",
+    "@biomejs/biome": "^2.3.14",
     "jscpd": "^4.0.8",
     "ts-prune": "^0.10.3",
-    "typescript": "~5.7.0",
-    "typescript-eslint": "^8.54.0"
+    "typescript": "~5.7.0"
   },
   "engines": {
     "node": ">=20"
