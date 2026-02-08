@@ -31,6 +31,9 @@
           }
         }
       },
+      "style": {
+        "noDefaultExport": "error"
+      },
       "nursery": {
         "noProcessEnv": "warn",
         "useStrictMode": "error"
