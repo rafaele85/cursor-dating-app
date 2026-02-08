@@ -1,7 +1,11 @@
 # Quality gates (SCRUM-14)
 
 Single reference for rules from **SCRUM-30** (Biome), **SCRUM-31** (additional tools), and **SCRUM-32** (remaining lint rules).  
-**Commands:** `npm run lint` | `npm run lint:fix` | `npm run lint:duplication` | `npm run lint:unused-exports` | `npm run typecheck` | `npm run format` | `npm run test:biome-rules`
+**Commands:**  
+- **All linters:** `npm run lint:all` (lint + lint:duplication + lint:unused-exports)  
+- **All unit tests:** `npm run test:all` or `npm run test` (test:biome-rules + test:unit)  
+- **All quality gates:** `npm run quality-gates` (lint:all + typecheck + test:all)  
+- Individual: `npm run lint` | `npm run lint:fix` | `npm run lint:duplication` | `npm run lint:unused-exports` | `npm run typecheck` | `npm run format` | `npm run test:biome-rules` | `npm run test:unit`
 
 **Lint scope:** `lint` checks `src`, the test runner, and root config files only (not `test/biome-rules-fixtures`, which exist to trigger custom rules and are validated by `test:biome-rules`).
 
@@ -57,6 +61,6 @@ Single reference for rules from **SCRUM-30** (Biome), **SCRUM-31** (additional t
 | Unused export detection | Y | ts-prune | `npm run lint:unused-exports` |
 | Typecheck | Y | typescript | `tsc --noEmit`, `npm run typecheck` |
 
-**CI:** Run `lint`, `typecheck`, `lint:duplication`, `lint:unused-exports`, `test:biome-rules`, `test` (workspaces if any).
+**CI:** Run `npm run quality-gates` (or equivalently: `lint:all`, `typecheck`, `test:all`). Workspaces: run in each app if any.
 
 **ESLint removed.** Two rules are **WON'T DO** (not implemented): (1) No TODO/FIXME comments in code, (2) Type/interface member delimiter (commas). GritQL attempts showed they are not feasible in Biome (comment content not matchable; delimiter not exposed in AST). See `docs/JIRA-TICKET-REMAINING-QUALITY-RULES.md` and `docs/BIOME-EXTEND-ESLINT-RULES-RESEARCH.md`.

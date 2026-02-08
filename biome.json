@@ -93,6 +93,14 @@
           }
         }
       }
+    },
+    {
+      "includes": ["test/unit/**", "vitest.config.ts"],
+      "linter": {
+        "rules": {
+          "style": { "noDefaultExport": "off" }
+        }
+      }
     }
   ]
 }
