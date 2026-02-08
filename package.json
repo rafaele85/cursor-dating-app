@@ -3,9 +3,14 @@
   "private": true,
   "workspaces": ["apps/*"],
   "scripts": {
-    "lint": "npm run lint --workspaces",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
     "typecheck": "npm run typecheck --workspaces",
     "test": "npm run test --workspaces"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4"
   },
   "engines": {
     "node": ">=20"
