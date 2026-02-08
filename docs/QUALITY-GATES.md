@@ -5,7 +5,8 @@ Single reference for rules from **SCRUM-30** (Biome), **SCRUM-31** (additional t
 - **All linters:** `npm run lint:all` (lint + lint:duplication + lint:unused-exports)  
 - **All unit tests:** `npm run test:all` or `npm run test` (test:biome-rules + test:unit)  
 - **All quality gates:** `npm run quality-gates` (lint:all + typecheck + test:all)  
-- Individual: `npm run lint` | `npm run lint:fix` | `npm run lint:duplication` | `npm run lint:unused-exports` | `npm run typecheck` | `npm run format` | `npm run test:biome-rules` | `npm run test:unit`
+- **Coverage (SCRUM-41):** `npm run test:coverage` — runs unit tests with V8 coverage and enforces 80% threshold (lines, functions, branches, statements). Report in `./coverage`.
+- Individual: `npm run lint` | `npm run lint:fix` | `npm run lint:duplication` | `npm run lint:unused-exports` | `npm run typecheck` | `npm run format` | `npm run test:biome-rules` | `npm run test:unit` | `npm run test:coverage`
 
 **Lint scope:** `lint` checks `src`, the test runner, and root config files only (not `test/biome-rules-fixtures`, which exist to trigger custom rules and are validated by `test:biome-rules`).
 

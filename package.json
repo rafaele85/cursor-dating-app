@@ -16,9 +16,11 @@
     "test:all": "npm run test:biome-rules && npm run test:unit",
     "test:biome-rules": "node test/run-biome-rules-tests.mjs",
     "test:unit": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "quality-gates": "npm run lint:all && npm run typecheck && npm run test:all"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^4.0.18",
     "@biomejs/biome": "^2.3.14",
     "jscpd": "^4.0.8",
     "ts-prune": "^0.10.3",
