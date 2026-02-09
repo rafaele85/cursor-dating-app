@@ -67,3 +67,49 @@ resource "google_sql_user" "app" {
   password = var.db_password
   project  = var.project_id
 }
+
+# App service account for Cloud Run / Compute (SCRUM-54). Least privilege: Cloud SQL Client only.
+resource "google_service_account" "app" {
+  account_id   = var.app_service_account_id
+  display_name = "Dating app runtime (Cloud Run / Compute)"
+  project      = var.project_id
+}
+
+resource "google_project_iam_member" "app_cloudsql_client" {
+  project = var.project_id
+  role    = "roles/cloudsql.client"
+  member  = "serviceAccount:${google_service_account.app.email}"
+}
+
+# Terraform/CI service account (SCRUM-54). Used by CI to run terraform plan/apply. Least-privilege roles for current resources.
+resource "google_service_account" "terraform_ci" {
+  account_id   = var.terraform_ci_service_account_id
+  display_name = "Terraform CI (plan/apply)"
+  project      = var.project_id
+}
+
+resource "google_project_iam_member" "terraform_ci_network_admin" {
+  project = var.project_id
+  role    = "roles/compute.networkAdmin"
+  member  = "serviceAccount:${google_service_account.terraform_ci.email}"
+}
+
+# roles/servicenetworking.networkAdmin is not supported at project level (400). Service networking
+# connection may require org-level role or initial apply with user credentials; compute.networkAdmin covers VPC/subnet.
+resource "google_project_iam_member" "terraform_ci_cloudsql_admin" {
+  project = var.project_id
+  role    = "roles/cloudsql.admin"
+  member  = "serviceAccount:${google_service_account.terraform_ci.email}"
+}
+
+resource "google_project_iam_member" "terraform_ci_sa_admin" {
+  project = var.project_id
+  role    = "roles/iam.serviceAccountAdmin"
+  member  = "serviceAccount:${google_service_account.terraform_ci.email}"
+}
+
+resource "google_project_iam_member" "terraform_ci_project_iam_admin" {
+  project = var.project_id
+  role    = "roles/resourcemanager.projectIamAdmin"
+  member  = "serviceAccount:${google_service_account.terraform_ci.email}"
+}

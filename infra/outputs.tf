@@ -28,3 +28,14 @@ output "db_name" {
   description = "Database name"
   value       = google_sql_database.main.name
 }
+
+# IAM (SCRUM-54) - for Cloud Run service_account or Compute
+output "app_service_account_email" {
+  description = "App service account email (use as Cloud Run service_account or Compute SA)"
+  value       = google_service_account.app.email
+}
+
+output "terraform_ci_service_account_email" {
+  description = "Terraform/CI service account email (use in CI for terraform plan/apply; e.g. Workload Identity or key)"
+  value       = google_service_account.terraform_ci.email
+}

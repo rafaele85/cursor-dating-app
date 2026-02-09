@@ -77,6 +77,8 @@ Required variables (set via `-var`, `-var-file`, or `.tfvars`):
 - **`db_password`** (required, sensitive) – Cloud SQL database user password.
 - **`db_instance_name`** (optional, default: `dating-app-db`) – Cloud SQL instance name.
 - **`db_name`** (optional, default: `dating_app`) – Database name (for Prisma).
+- **`app_service_account_id`** (optional, default: `dating-app-runner`) – Service account ID for the app (Cloud Run / Compute). Granted `roles/cloudsql.client` only (least privilege).
+- **`terraform_ci_service_account_id`** (optional, default: `terraform-ci`) – Service account ID for Terraform/CI. Granted least-privilege roles to manage VPC, Cloud SQL, service accounts, and project IAM.
 
 **Example `.tfvars` file** (create `dev.tfvars` or similar; add to `.gitignore` if it contains sensitive values):
 
@@ -128,6 +130,16 @@ The project includes `tools/cloud-sql-proxy.x64.exe` for connecting to Cloud SQL
    ```
 
    Use the same `db_user` and `db_password` as in Terraform; replace `YOUR_PASSWORD` with the actual password. Do not commit `.env`.
+
+## IAM and service accounts (SCRUM-54)
+
+Terraform creates two service accounts:
+
+1. **App service account** (default ID: `dating-app-runner`) – **Cloud SQL Client** only. Use for Cloud Run or Compute so the app can connect to Cloud SQL. Output: `app_service_account_email` (use as Cloud Run `service_account` in SCRUM-55).
+
+2. **Terraform/CI service account** (default ID: `terraform-ci`) – For running `terraform plan`/`apply` in CI. Least-privilege roles: `compute.networkAdmin`, `cloudsql.admin`, `iam.serviceAccountAdmin`, `resourcemanager.projectIamAdmin`. (Note: `servicenetworking.networkAdmin` is not supported at project level; creating the service networking connection may require the first apply to run with user credentials, or an org-level role.)
+
+**Using the Terraform SA in CI:** Authenticate as this SA in your pipeline (e.g. GitHub Actions, GitLab CI) via **Workload Identity Federation** (recommended, no key file) or a **service account key** (e.g. `gcloud auth activate-service-account --key-file=...`). Store the key or federation config as a CI secret; do not commit keys. The first `terraform apply` that creates this SA must be run with credentials that can create service accounts and set IAM (e.g. your user or an org admin).
 
 ## Layout
 
