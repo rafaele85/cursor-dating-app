@@ -1,0 +1,22 @@
+---
+description: When creating Jira issues in SCRUM, set Team so they show on the board
+globs: 
+alwaysApply: true
+---
+
+# Jira SCRUM – default Team for new issues
+
+When creating or updating Jira issues in project **SCRUM** (radiantsystem Atlassian), set the **Team** field so issues appear on the board.
+
+- **Team ID:** `896597de-770a-4ecf-925c-c8706d22b7a7`
+- **Team name:** StarTeam
+- **Jira field:** `customfield_10001`
+- **Source:** Copied from existing ticket SCRUM-10
+
+When using the Jira MCP to create issues (e.g. `createJiraIssue`), include in `additional_fields`:
+
+```json
+"additional_fields": { "customfield_10001": { "id": "896597de-770a-4ecf-925c-c8706d22b7a7" } }
+```
+
+If the API accepts a different format for the Team field, use the format that matches SCRUM-10’s `customfield_10001`. See `docs/JIRA-BOARD.md` for the same reference.

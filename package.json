@@ -5,19 +5,26 @@
     "apps/*"
   ],
   "scripts": {
-    "lint": "biome check src test/run-biome-rules-tests.mjs test/unit vitest.config.ts biome.json",
-    "lint:fix": "biome check --write src test/run-biome-rules-tests.mjs test/unit vitest.config.ts biome.json",
+    "lint": "biome check src test/run-biome-rules-tests.mjs test/unit vitest.config.ts biome.json apps/web",
+    "lint:fix": "biome check --write src test/run-biome-rules-tests.mjs test/unit vitest.config.ts biome.json apps/web",
     "lint:all": "npm run lint && npm run lint:duplication && npm run lint:unused-exports",
-    "lint:duplication": "jscpd src/",
-    "lint:unused-exports": "ts-prune",
+    "lint:duplication": "jscpd src/ apps/web",
+    "lint:unused-exports": "ts-prune && npm run lint:unused-exports --workspaces --if-present",
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit",
+    "typecheck:apps": "npm run typecheck --workspaces --if-present",
     "test": "npm run test:all",
-    "test:all": "npm run test:biome-rules && npm run test:unit",
+    "test:all": "npm run test:biome-rules && npm run test:unit && npm run test --workspaces --if-present",
     "test:biome-rules": "node test/run-biome-rules-tests.mjs",
     "test:unit": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "quality-gates": "npm run lint:all && npm run typecheck && npm run test:all"
+    "quality-gates": "npm run lint:all && npm run typecheck && npm run typecheck:apps && npm run test:all",
+    "terraform": ".\\tools\\terraform.exe -chdir=infra",
+    "terraform:init": "npm run terraform -- init",
+    "terraform:validate": "npm run terraform -- validate",
+    "terraform:plan": "npm run terraform -- plan",
+    "terraform:apply": "npm run terraform -- apply",
+    "db:proxy": ".\\tools\\cloud-sql-proxy.x64.exe --port 5432 --private-ip cursor-dating-app2:europe-west1:dating-app-db"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.0.18",

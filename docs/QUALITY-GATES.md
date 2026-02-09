@@ -8,6 +8,8 @@ Single reference for rules from **SCRUM-30** (Biome), **SCRUM-31** (additional t
 - **Coverage (SCRUM-41):** `npm run test:coverage` — runs unit tests with V8 coverage and enforces 80% threshold (lines, functions, branches, statements). Report in `./coverage`.
 - Individual: `npm run lint` | `npm run lint:fix` | `npm run lint:duplication` | `npm run lint:unused-exports` | `npm run typecheck` | `npm run format` | `npm run test:biome-rules` | `npm run test:unit` | `npm run test:coverage`
 
+**Web app (SCRUM-6):** `apps/web` — run with `npm run dev -w web` (or `cd apps/web && npm run dev`). Build: `npm run build -w web`. All quality gates run on web: root `lint` / `lint:duplication` / `lint:unused-exports` include `apps/web`; `typecheck:apps` and `test --workspaces` run web's typecheck and tests. Run full gates from root: `npm run quality-gates`.
+
 **Lint scope:** `lint` checks `src`, the test runner, and root config files only (not `test/biome-rules-fixtures`, which exist to trigger custom rules and are validated by `test:biome-rules`).
 
 | Rule | IsDone | Tool | Tool setting |

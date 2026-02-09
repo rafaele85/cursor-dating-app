@@ -9,8 +9,17 @@ node_modules/
 # Build and tooling
 dist/
 coverage/
+.next/
 *.log
 
 # IDE
 .idea/
 .vscode/
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfvars.local
