@@ -23,7 +23,8 @@
     "terraform:init": "npm run terraform -- init",
     "terraform:validate": "npm run terraform -- validate",
     "terraform:plan": "npm run terraform -- plan",
-    "terraform:apply": "npm run terraform -- apply"
+    "terraform:apply": "npm run terraform -- apply",
+    "db:proxy": ".\\tools\\cloud-sql-proxy.x64.exe --port 5432 --private-ip cursor-dating-app2:europe-west1:dating-app-db"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.0.18",
