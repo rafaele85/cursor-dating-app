@@ -10,7 +10,13 @@ export default defineConfig({
   coverage: {
     provider: 'v8',
     include: ['src/**/*.ts'],
-    exclude: ['**/*.test.ts', '**/test/**', 'node_modules', 'dist', '**/*.d.ts'],
+    exclude: [
+      '**/*.test.ts',
+      '**/test/**',
+      'node_modules',
+      'dist',
+      '**/*.d.ts',
+    ],
     reportsDirectory: './coverage',
     reporter: ['text', 'html'],
     thresholds: {
