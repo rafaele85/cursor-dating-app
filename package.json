@@ -18,7 +18,12 @@
     "test:biome-rules": "node test/run-biome-rules-tests.mjs",
     "test:unit": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "quality-gates": "npm run lint:all && npm run typecheck && npm run typecheck:apps && npm run test:all"
+    "quality-gates": "npm run lint:all && npm run typecheck && npm run typecheck:apps && npm run test:all",
+    "terraform": ".\\tools\\terraform.exe -chdir=infra",
+    "terraform:init": "npm run terraform -- init",
+    "terraform:validate": "npm run terraform -- validate",
+    "terraform:plan": "npm run terraform -- plan",
+    "terraform:apply": "npm run terraform -- apply"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.0.18",
