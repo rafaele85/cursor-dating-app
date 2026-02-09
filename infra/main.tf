@@ -3,6 +3,13 @@ provider "google" {
   region  = var.region
 }
 
+# APIs required for Cloud Run (SCRUM-55). Enable before creating the service.
+resource "google_project_service" "run" {
+  project            = var.project_id
+  service            = "run.googleapis.com"
+  disable_on_destroy = false
+}
+
 # VPC and subnet for app/DB (SCRUM-52). Private Google Access enabled for Cloud SQL/Cloud Run.
 resource "google_compute_network" "main" {
   name                    = "dating-app-vpc"
@@ -112,4 +119,60 @@ resource "google_project_iam_member" "terraform_ci_project_iam_admin" {
   project = var.project_id
   role    = "roles/resourcemanager.projectIamAdmin"
   member  = "serviceAccount:${google_service_account.terraform_ci.email}"
+}
+
+resource "google_project_iam_member" "terraform_ci_run_admin" {
+  project = var.project_id
+  role    = "roles/run.admin"
+  member  = "serviceAccount:${google_service_account.terraform_ci.email}"
+}
+
+# App SA needs Network User on subnet for Cloud Run direct VPC egress (SCRUM-55).
+resource "google_compute_subnetwork_iam_member" "app_network_user" {
+  subnetwork = google_compute_subnetwork.main.name
+  region     = var.region
+  role       = "roles/compute.networkUser"
+  member     = "serviceAccount:${google_service_account.app.email}"
+}
+
+# Minimal Cloud Run service (SCRUM-55). Placeholder image; replace with API image when deploying.
+# Direct VPC egress + Cloud SQL socket for private IP access.
+resource "google_cloud_run_v2_service" "api" {
+  name             = var.cloud_run_service_name
+  location         = var.region
+  project          = var.project_id
+  deletion_protection = false
+  ingress          = "INGRESS_TRAFFIC_ALL"
+
+  template {
+    service_account = google_service_account.app.email
+    scaling {
+      min_instance_count = 0
+      max_instance_count = 10
+    }
+    vpc_access {
+      network_interfaces {
+        network    = google_compute_network.main.name
+        subnetwork = google_compute_subnetwork.main.name
+      }
+    }
+    volumes {
+      name = "cloudsql"
+      cloud_sql_instance {
+        instances = [google_sql_database_instance.main.connection_name]
+      }
+    }
+    containers {
+      image = var.cloud_run_image
+      ports {
+        container_port = 8080
+      }
+      volume_mounts {
+        name       = "cloudsql"
+        mount_path = "/cloudsql"
+      }
+    }
+  }
+
+  depends_on = [google_compute_subnetwork_iam_member.app_network_user, google_project_service.run]
 }
