@@ -1,2 +1,14 @@
-# Outputs (e.g. Cloud SQL connection, Cloud Run URL) will be added in later tasks.
-# This file is intentionally minimal for SCRUM-50 (bootstrap and layout).
+output "network_name" {
+  description = "VPC network name"
+  value       = google_compute_network.main.name
+}
+
+output "subnet_name" {
+  description = "Subnet name (for Cloud SQL, Cloud Run)"
+  value       = google_compute_subnetwork.main.name
+}
+
+output "subnet_self_link" {
+  description = "Subnet self link for referencing in other resources"
+  value       = google_compute_subnetwork.main.self_link
+}
