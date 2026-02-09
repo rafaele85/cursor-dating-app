@@ -101,6 +101,14 @@
           "style": { "noDefaultExport": "off" }
         }
       }
+    },
+    {
+      "includes": ["apps/web/**"],
+      "linter": {
+        "rules": {
+          "style": { "noDefaultExport": "off" }
+        }
+      }
     }
   ]
 }

@@ -20,5 +20,8 @@ Full-stack dating app: Google sign-in, profile, photos, browse, swipe, matches, 
 
 ## Process & Quality
 - KISS, YAGNI. Tiny increments. Gitflow with human PR review.
+- Tiny packages: 1000 LOC max per package.
+- At least 80% test coverage.
+- Clean code.
 - Flow: requirements → plan → tickets → code → tests → PR → deploy.
 - Gates: Biome, type check, unit tests, e2e tests.
