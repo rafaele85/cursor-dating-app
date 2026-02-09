@@ -1,2 +1,10 @@
-# Variables for GCP project, region, etc. will be added in SCRUM-51.
-# This file is intentionally minimal for SCRUM-50 (bootstrap and layout).
+variable "project_id" {
+  description = "GCP project ID (existing project)"
+  type        = string
+}
+
+variable "region" {
+  description = "GCP region (e.g. europe-west1, us-central1)"
+  type        = string
+  default     = "europe-west1"
+}

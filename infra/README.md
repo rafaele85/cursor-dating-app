@@ -67,16 +67,40 @@ Then:
 terraform init -backend-config=backend.gcs.tfbackend
 ```
 
+## Variables
+
+Required variables (set via `-var`, `-var-file`, or `.tfvars`):
+
+- **`project_id`** (required) – Your GCP project ID (e.g. `my-dating-app-123456`).
+- **`region`** (optional, default: `europe-west1`) – GCP region for resources.
+
+**Example `.tfvars` file** (create `dev.tfvars` or similar; add to `.gitignore` if it contains sensitive values):
+
+```hcl
+project_id = "your-gcp-project-id"
+region     = "europe-west1"
+```
+
 ## Plan and apply
 
 After init:
 
 ```bash
-terraform plan   # optional: -var-file=dev.tfvars
-terraform apply   # optional: -var-file=dev.tfvars
+# Using -var
+terraform plan -var="project_id=YOUR_PROJECT_ID" -var="region=europe-west1"
+terraform apply -var="project_id=YOUR_PROJECT_ID" -var="region=europe-west1"
+
+# Using .tfvars file (recommended)
+terraform plan -var-file=dev.tfvars
+terraform apply -var-file=dev.tfvars
 ```
 
-Required variables (e.g. project ID, region) will be added in later tasks; when they exist, pass them via `-var`, `-var-file`, or `.tfvars`.
+Or with npm scripts:
+
+```bash
+npm run terraform:plan -- -var="project_id=YOUR_PROJECT_ID"
+npm run terraform:apply -- -var="project_id=YOUR_PROJECT_ID"
+```
 
 ## Layout
 

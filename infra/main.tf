@@ -1,2 +1,6 @@
-# GCP resources will be added in later tasks (SCRUM-51 onwards).
-# This file is intentionally minimal for SCRUM-50 (bootstrap and layout).
+provider "google" {
+  project = var.project_id
+  region  = var.region
+}
+
+# GCP resources (VPC, Cloud SQL, etc.) will be added in later tasks (SCRUM-52 onwards).
