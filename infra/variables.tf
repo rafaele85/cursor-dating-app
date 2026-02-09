@@ -39,3 +39,16 @@ variable "db_password" {
   type        = string
   sensitive   = true
 }
+
+# IAM (SCRUM-54)
+variable "app_service_account_id" {
+  description = "Service account ID for the app (Cloud Run / Compute). Must be unique in project, lowercase, hyphen."
+  type        = string
+  default     = "dating-app-runner"
+}
+
+variable "terraform_ci_service_account_id" {
+  description = "Service account ID for Terraform/CI (plan/apply). Must be unique in project, lowercase, hyphen."
+  type        = string
+  default     = "terraform-ci"
+}
