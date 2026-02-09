@@ -8,6 +8,15 @@ Scrum boards in Jira often **filter by Team**. The dating-app tickets were creat
 
 If your board is configured to show only issues for a specific team, issues without a Team won’t appear.
 
+## Default Team for new SCRUM tickets (agent note)
+
+When creating Jira issues in project **SCRUM**, set **Team** so they show on the board:
+
+- **Team ID:** `896597de-770a-4ecf-925c-c8706d22b7a7`
+- **Team name:** StarTeam
+- **Source:** SCRUM-10 (customfield_10001)
+- **Usage:** Set `customfield_10001` to this team when creating new SCRUM issues (Epics, Tasks, etc.).
+
 ## How to fix
 
 **Option A – Assign a team to the issues (recommended)**  
