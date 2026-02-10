@@ -79,6 +79,8 @@ Required variables (set via `-var`, `-var-file`, or `.tfvars`):
 - **`db_name`** (optional, default: `dating_app`) – Database name (for Prisma).
 - **`app_service_account_id`** (optional, default: `dating-app-runner`) – Service account ID for the app (Cloud Run / Compute). Granted `roles/cloudsql.client` only (least privilege).
 - **`terraform_ci_service_account_id`** (optional, default: `terraform-ci`) – Service account ID for Terraform/CI. Granted least-privilege roles to manage VPC, Cloud SQL, service accounts, and project IAM.
+- **`cloud_run_service_name`** (optional, default: `dating-app-api`) – Cloud Run service name (API deploy target).
+- **`cloud_run_image`** (optional, default: placeholder) – Container image for the Cloud Run service. Replace with your API image when deploying.
 
 **Example `.tfvars` file** (create `dev.tfvars` or similar; add to `.gitignore` if it contains sensitive values):
 
@@ -137,9 +139,19 @@ Terraform creates two service accounts:
 
 1. **App service account** (default ID: `dating-app-runner`) – **Cloud SQL Client** only. Use for Cloud Run or Compute so the app can connect to Cloud SQL. Output: `app_service_account_email` (use as Cloud Run `service_account` in SCRUM-55).
 
-2. **Terraform/CI service account** (default ID: `terraform-ci`) – For running `terraform plan`/`apply` in CI. Least-privilege roles: `compute.networkAdmin`, `cloudsql.admin`, `iam.serviceAccountAdmin`, `resourcemanager.projectIamAdmin`. (Note: `servicenetworking.networkAdmin` is not supported at project level; creating the service networking connection may require the first apply to run with user credentials, or an org-level role.)
+2. **Terraform/CI service account** (default ID: `terraform-ci`) – For running `terraform plan`/`apply` in CI. Least-privilege roles: `compute.networkAdmin`, `cloudsql.admin`, `iam.serviceAccountAdmin`, `resourcemanager.projectIamAdmin`, `run.admin`. (Note: `servicenetworking.networkAdmin` is not supported at project level; creating the service networking connection may require the first apply to run with user credentials, or an org-level role.)
 
 **Using the Terraform SA in CI:** Authenticate as this SA in your pipeline (e.g. GitHub Actions, GitLab CI) via **Workload Identity Federation** (recommended, no key file) or a **service account key** (e.g. `gcloud auth activate-service-account --key-file=...`). Store the key or federation config as a CI secret; do not commit keys. The first `terraform apply` that creates this SA must be run with credentials that can create service accounts and set IAM (e.g. your user or an org admin).
+
+## App hosting – Cloud Run (SCRUM-55)
+
+A **minimal Cloud Run service** (`dating-app-api` by default) is created as the deploy target for the API. It uses:
+
+- **Direct VPC egress** (no connector): traffic to the VPC (e.g. Cloud SQL private IP) goes through the same subnet as the rest of the app.
+- **Cloud SQL**: the Cloud SQL instance is attached via the built-in socket at `/cloudsql/<connection_name>`; set `DATABASE_URL` to use that path (or the instance’s private IP).
+- **App service account**: the revision runs as the app SA (Cloud SQL Client + Network User on the subnet).
+
+The service starts with a **placeholder image** (`cloud_run_image`). When you build and push your API image (e.g. to Artifact Registry), set `cloud_run_image` to that image and apply again, or deploy new revisions via `gcloud run deploy`. Output: `cloud_run_service_uri` — the URL of the service.
 
 ## Layout
 

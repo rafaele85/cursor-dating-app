@@ -52,3 +52,16 @@ variable "terraform_ci_service_account_id" {
   type        = string
   default     = "terraform-ci"
 }
+
+# Cloud Run (SCRUM-55)
+variable "cloud_run_service_name" {
+  description = "Cloud Run service name (API / backend). Must be unique in region, lowercase, hyphen."
+  type        = string
+  default     = "dating-app-api"
+}
+
+variable "cloud_run_image" {
+  description = "Container image for Cloud Run service (placeholder until API image is built)."
+  type        = string
+  default     = "us-docker.pkg.dev/cloudrun/container/hello"
+}

@@ -39,3 +39,9 @@ output "terraform_ci_service_account_email" {
   description = "Terraform/CI service account email (use in CI for terraform plan/apply; e.g. Workload Identity or key)"
   value       = google_service_account.terraform_ci.email
 }
+
+# Cloud Run (SCRUM-55)
+output "cloud_run_service_uri" {
+  description = "Cloud Run service URI (deploy target for API)"
+  value       = google_cloud_run_v2_service.api.uri
+}
